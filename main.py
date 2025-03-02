@@ -42,7 +42,7 @@ async def chat(query_input:query_input):
     if(not query_input.session_id):
         query_input.session_id = str(uuid.uuid4())
     chat_history =get_chat_history(query_input.session_id)
-    response = generate_response(query_input.question, query_input.course_outcomes, chat_history)
+    response = generate_response(query_input.question, query_input.course_outcomes, chat_history,query_input.model)
     insert_application_logs(query_input.session_id, query_input.question, response, query_input.model)
 
     return QueryResponse(response=response, session_id=query_input.session_id, model_name=query_input.model)

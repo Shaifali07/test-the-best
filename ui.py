@@ -64,7 +64,7 @@ def get_api_response(question, course_outcomes,session_id, model):
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
         return None
-model_options = ["gpt-4o", "gpt-4o-mini"]
+model_options = ["DeepSeek-R1-Distill-Llama-70b", "llama-3.3-70b-versatile","gemma2-9b-it:Google"]
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 st.sidebar.selectbox("Select Model", options=model_options, key="model")
@@ -88,10 +88,19 @@ if st.sidebar.button("Clear Question Bank"):
     st.session_state.documents=None
     st.session_state.uploader_key=1
     st.rerun()
-
-user_input = st.sidebar.text_area("Enter Course Outcomes:(co1:xxx,co2:yyy)", None)
-if st.sidebar.button("Add COs") and user_input:
-    text=st.sidebar.text_area("You have entered",user_input)
+if "key_text" not in st.session_state:
+    st.session_state.key_text='text'
+user_input = st.sidebar.text_area("Enter Course Outcomes:(co1:xxx,co2:yyy)", key=st.session_state.key_text)
+col1, col2 = st.sidebar.columns(2)
+with col1:
+    add_co_button=col1.button("Add COs")
+if add_co_button and user_input:
+        text=st.sidebar.text_area("You have entered",user_input)
+with col2:
+    clear_co_button=col2.button("Clear COs")
+    if(clear_co_button):
+        st.session_state.key_text = 'nexttext'
+        st.rerun()
 
 
 for message in st.session_state.messages:
@@ -111,6 +120,7 @@ if prompt := st.chat_input("Query:"):
         if response:
             st.session_state.session_id = response.get('session_id')
             st.session_state.messages.append({"role": "assistant", "content": response['response']})
+            st.write(response.get('model'))
 
             with st.chat_message("assistant"):
                 st.markdown(response['response'])

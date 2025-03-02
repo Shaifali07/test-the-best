@@ -5,10 +5,7 @@ sys.path.insert(0, 'C:/Users/Ruchitesh/Desktop/')
 from my_key import grq_key
 os.environ["GROQ_API_KEY"]=grq_key
 from langchain_groq import ChatGroq
-llm=ChatGroq(
-        model_name="llama-3.3-70b-versatile",
-        temperature=0
-    )
+
 retriever = vector_store.as_retriever(search_kwargs={"k":2})
 
 from langchain_core.prompts import ChatPromptTemplate
@@ -53,8 +50,11 @@ Do not include anything else''')
     ]
 )
 # follow_up_question = "comparision of it with forwarding"
-def generate_response(question,course_outcomes,chat_history):
-
+def generate_response(question,course_outcomes,chat_history,model):
+    llm = ChatGroq(
+        model_name=model,
+        temperature=0
+    )
     history_aware_retriver = create_history_aware_retriever(llm, retriever, contextualize_prompt)
     question_answer_chain=create_stuff_documents_chain(llm,prompt=qa_prompt)
     chain=create_retrieval_chain(history_aware_retriver, question_answer_chain)
