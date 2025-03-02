@@ -65,8 +65,10 @@ def get_api_response(question, course_outcomes,session_id, model):
         st.error(f"An error occurred: {str(e)}")
         return None
 model_options = ["gpt-4o", "gpt-4o-mini"]
+if "uploader_key" not in st.session_state:
+    st.session_state.uploader_key = 0
 st.sidebar.selectbox("Select Model", options=model_options, key="model")
-uploaded_file = st.sidebar.file_uploader("Choose a file", type=["docx"],accept_multiple_files=True)
+uploaded_file = st.sidebar.file_uploader("Choose a file", type=["docx"],accept_multiple_files=True,key=st.session_state.uploader_key)
 if uploaded_file and st.sidebar.button("Upload"):
     with st.spinner("Uploading..."):
         upload_response = upload_document(uploaded_file)
@@ -83,6 +85,9 @@ if "documents" in st.session_state and st.session_state.documents:
 if st.sidebar.button("Clear Question Bank"):
     clear_question_bank()
     delete_all_record()
+    st.session_state.documents=None
+    st.session_state.uploader_key=1
+    st.rerun()
 
 user_input = st.sidebar.text_area("Enter Course Outcomes:(co1:xxx,co2:yyy)", None)
 if st.sidebar.button("Add COs") and user_input:
