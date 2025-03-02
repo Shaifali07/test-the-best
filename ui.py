@@ -6,7 +6,7 @@ from main import clear_question_bank
 # from sidebar import display_sidebar
 # from chat_interface import display_chat_interface
 
-st.title("Langchain RAG Chatbot")
+st.title("Paper Genie :male_genie: : Test the Best :pencil: ")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
