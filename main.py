@@ -1,6 +1,7 @@
 # command = 'python install_packages.py'
 # os.system(command)
 from typing import List
+import os
 from langchain_utilites import generate_response
 from db_utilities import get_chat_history,insert_application_logs,get_all_documents
 from pydantic import BaseModel
@@ -8,9 +9,22 @@ from chroma_utils import index_document_to_Chroma
 import uuid
 from fastapi import FastAPI, UploadFile, File,HTTPException
 app=FastAPI()
-import os
 
-
+from db_utilities import insert_document_record, delete_all_record
+delete_all_record()
+def clear_question_bank():
+    try:
+        directory_path='C:/Users/Ruchitesh/Desktop/Rag_based_question_paper_generator/venv/papers'
+        files = os.listdir(directory_path)
+        for file in files:
+            file_path = os.path.join(directory_path, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+        return True
+    except OSError:
+        return False
+if (not clear_question_bank()):
+    print("error in clearing the question bank")
 
 
 class query_input(BaseModel):
@@ -45,7 +59,7 @@ async def create_upload_file( file: UploadFile = File(...)):
               with open(file_path, "wb") as f:
                     f.write(file.file.read())
               success = index_document_to_Chroma()
-
+              file_id = insert_document_record(file.filename)
               if(success):
 
                      return {"message": "File saved successfully"}

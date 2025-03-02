@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
-from db_utilities import get_all_documents
+from db_utilities import get_all_documents, delete_all_record
+from main import clear_question_bank
 
 # from sidebar import display_sidebar
 # from chat_interface import display_chat_interface
@@ -69,7 +70,19 @@ uploaded_file = st.sidebar.file_uploader("Choose a file", type=["docx"],accept_m
 if uploaded_file and st.sidebar.button("Upload"):
     with st.spinner("Uploading..."):
         upload_response = upload_document(uploaded_file)
-        st.sidebar.write(upload_response)
+        st.sidebar.write(upload_response["message"])
+st.sidebar.header("Uploaded Documents")
+if st.sidebar.button("List Documents"):
+      st.session_state.documents = get_all_documents()
+      # st.write(st.session_state.documents)
+      if (len(st.session_state.documents)==0):
+          st.sidebar.write(":red[Please Upload the Question Bank]")
+if "documents" in st.session_state and st.session_state.documents:
+     for doc in st.session_state.documents:
+        st.sidebar.text(f"{doc['filename']} (ID: {doc['id']})")
+if st.sidebar.button("Clear Question Bank"):
+    clear_question_bank()
+    delete_all_record()
 
 user_input = st.sidebar.text_area("Enter Course Outcomes:(co1:xxx,co2:yyy)", None)
 if st.sidebar.button("Add COs") and user_input:
@@ -96,5 +109,6 @@ if prompt := st.chat_input("Query:"):
 
             with st.chat_message("assistant"):
                 st.markdown(response['response'])
+
 
 

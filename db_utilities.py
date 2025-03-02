@@ -44,7 +44,36 @@ def get_chat_history(session_id):
     conn.close()
     print(messages)
     return messages
+def insert_document_record(filename):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO document_store (filename) VALUES (?)', (filename,))
+    file_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    return file_id
+
+def delete_document_record(file_id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM document_store WHERE id = ?', (file_id,))
+    conn.commit()
+    conn.close()
+    return True
+def delete_all_record():
+    conn = get_db_connection()
+    conn.execute('DELETE FROM document_store')
+    conn.commit()
+    conn.close()
+    return True
+def create_document_store():
+    conn = get_db_connection()
+    conn.execute('''CREATE TABLE IF NOT EXISTS document_store
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     filename TEXT,
+                     upload_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+    conn.close()
 
 
 create_application_logs()
+create_document_store()
 
