@@ -86,7 +86,7 @@ if st.sidebar.button("Clear Question Bank"):
     clear_question_bank()
     delete_all_record()
     st.session_state.documents=None
-    st.session_state.uploader_key=1
+    st.session_state.uploader_key+=1
     st.rerun()
 if "key_text" not in st.session_state:
     st.session_state.key_text='text'
@@ -99,7 +99,7 @@ if add_co_button and user_input:
 with col2:
     clear_co_button=col2.button("Clear COs")
     if(clear_co_button):
-        st.session_state.key_text = 'nexttext'
+        st.session_state.key_text = st.session_state.key_text+'0'
         st.rerun()
 
 
