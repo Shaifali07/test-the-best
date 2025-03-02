@@ -32,7 +32,7 @@ def upload_document(uploaded_files):
         # print(files)
 
         if response.status_code == 200:
-            return response.json()
+            return "File(s) Saved Successfully!!!!!"
         else:
             st.error(f"Failed to upload file. Error: {response.status_code} - {response.text}")
             return None
@@ -72,7 +72,7 @@ uploaded_file = st.sidebar.file_uploader("Choose a file", type=["docx"],accept_m
 if uploaded_file and st.sidebar.button("Upload"):
     with st.spinner("Uploading..."):
         upload_response = upload_document(uploaded_file)
-        st.sidebar.write(upload_response["message"])
+        st.sidebar.write(f":green[{upload_response}]")
 st.sidebar.header("Uploaded Documents")
 if st.sidebar.button("List Documents"):
       st.session_state.documents = get_all_documents()
