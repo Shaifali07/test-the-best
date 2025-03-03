@@ -1,6 +1,7 @@
 # command = 'python install_packages.py'
 # os.system(command)
 from typing import List
+import pathlib
 import os
 from langchain_utilites import generate_response
 from db_utilities import get_chat_history,insert_application_logs,get_all_documents
@@ -10,11 +11,12 @@ import uuid
 from fastapi import FastAPI, UploadFile, File,HTTPException
 app=FastAPI()
 
+directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'venv\papers\\')
 from db_utilities import insert_document_record, delete_all_record
 delete_all_record()
-def clear_question_bank():
+def clear_question_bank(directory_path):
     try:
-        directory_path='C:/Users/Ruchitesh/Desktop/Rag_based_question_paper_generator/venv/papers'
+
         files = os.listdir(directory_path)
         for file in files:
             file_path = os.path.join(directory_path, file)
@@ -23,7 +25,7 @@ def clear_question_bank():
         return True
     except OSError:
         return False
-if (not clear_question_bank()):
+if (not clear_question_bank(directory_path)):
     print("error in clearing the question bank")
 
 
@@ -54,8 +56,8 @@ async def chat(query_input:query_input):
 async def create_upload_file( file: UploadFile = File(...)):
     # return {"filename": file.filename}
       try:
-      #
-              file_path = f"C://Users//Ruchitesh//Desktop//Rag_based_question_paper_generator//venv//papers//{file.filename}"
+
+              file_path = directory_path+file.filename
               with open(file_path, "wb") as f:
                     f.write(file.file.read())
               success = index_document_to_Chroma()

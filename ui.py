@@ -1,8 +1,12 @@
 import streamlit as st
 import requests
+import os
+import pathlib
+import torch
 from db_utilities import get_all_documents, delete_all_record
 from main import clear_question_bank
-
+torch.classes.__path__ = []
+directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'venv\papers')
 # from sidebar import display_sidebar
 # from chat_interface import display_chat_interface
 
@@ -68,7 +72,7 @@ model_options = ["DeepSeek-R1-Distill-Llama-70b", "llama-3.3-70b-versatile","gem
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 st.sidebar.selectbox("Select Model", options=model_options, key="model")
-uploaded_file = st.sidebar.file_uploader("Choose a file", type=["docx"],accept_multiple_files=True,key=st.session_state.uploader_key)
+uploaded_file = st.sidebar.file_uploader("Add Question Bank", type=["docx"],accept_multiple_files=True,key=st.session_state.uploader_key)
 if uploaded_file and st.sidebar.button("Upload"):
     with st.spinner("Uploading..."):
         upload_response = upload_document(uploaded_file)
@@ -83,7 +87,7 @@ if "documents" in st.session_state and st.session_state.documents:
      for doc in st.session_state.documents:
         st.sidebar.text(f"{doc['filename']} (ID: {doc['id']})")
 if st.sidebar.button("Clear Question Bank"):
-    clear_question_bank()
+    clear_question_bank(directory_path)
     delete_all_record()
     st.session_state.documents=None
     st.session_state.uploader_key+=1
@@ -116,11 +120,12 @@ if prompt := st.chat_input("Query:"):
     # Get API response
     with st.spinner("Generating response..."):
         response = get_api_response(prompt,user_input, st.session_state.session_id, st.session_state.model)
+        # st.write(st.session_state.model)
 
         if response:
             st.session_state.session_id = response.get('session_id')
             st.session_state.messages.append({"role": "assistant", "content": response['response']})
-            st.write(response.get('model'))
+            # st.write(response.get('model'))
 
             with st.chat_message("assistant"):
                 st.markdown(response['response'])
