@@ -14,7 +14,9 @@ import uuid
 from fastapi import FastAPI, UploadFile, File,HTTPException
 app=FastAPI()
 
-directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'\papers\\')
+
+# directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'\papers')
+directory_path=(os.getcwd()+'/papers')
 from db_utilities import insert_document_record, delete_all_record
 delete_all_record()
 def clear_question_bank(directory_path):
@@ -27,7 +29,7 @@ def clear_question_bank(directory_path):
                 os.remove(file_path)
         return True
     except OSError:
-        return False
+         return False
 if (not clear_question_bank(directory_path)):
     print("error in clearing the question bank")
 
@@ -60,7 +62,7 @@ async def create_upload_file( file: UploadFile = File(...)):
     # return {"filename": file.filename}
       try:
 
-              file_path = directory_path+file.filename
+              file_path = os.getcwd()+'/papers/'+file.filename
               with open(file_path, "wb") as f:
                     f.write(file.file.read())
               success = index_document_to_Chroma()
