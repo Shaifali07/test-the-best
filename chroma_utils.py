@@ -9,10 +9,10 @@ text_splitter=RecursiveCharacterTextSplitter(
     length_function=len
 )
 embedding_function=HuggingFaceEmbeddings()
-persist_directory=r"C:\Users\Ruchitesh\Desktop\Rag_based_question_paper_generator\venv\db"
+persist_directory=r"db"
 vector_store = Chroma(persist_directory=persist_directory, embedding_function=embedding_function)
 def load_documents():
-    loader = DirectoryLoader(r"C:\Users\Ruchitesh\Desktop\Rag_based_question_paper_generator\venv\papers", glob="**/*.docx")
+    loader = DirectoryLoader(r"\papers", glob="**/*.docx")
     total_docs=len(loader.load())
     splits = loader.load_and_split(text_splitter=text_splitter)
     return splits,total_docs

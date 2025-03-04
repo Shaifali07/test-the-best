@@ -1,11 +1,12 @@
 import os
+import streamlit as st
 from chroma_utils import vector_store
 # import sys
 # sys.path.insert(0, 'C:/Users/Ruchitesh/Desktop/')
 # from my_key import grq_key
 # os.environ["GROQ_API_KEY"]=grq_key
 from langchain_groq import ChatGroq
-
+# from ui import api_key
 retriever = vector_store.as_retriever(search_kwargs={"k":2})
 
 from langchain_core.prompts import ChatPromptTemplate
@@ -53,7 +54,7 @@ Do not include anything else''')
 def generate_response(question,course_outcomes,chat_history,model):
     llm = ChatGroq(
         model_name=model,
-        # apiKey= ,
+        api_key=st.secrets["GROQ_API_KEY"],
         temperature=0
     )
     history_aware_retriver = create_history_aware_retriever(llm, retriever, contextualize_prompt)

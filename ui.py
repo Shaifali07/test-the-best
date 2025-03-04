@@ -8,7 +8,8 @@ import pathlib
 import torch
 from db_utilities import get_all_documents, delete_all_record
 from main import clear_question_bank
-os.environ['GROQ_API_KEY']=st.secrets['GROQ_API_KEY']
+
+# os.environ["GROQ_API_KEY"]=
 torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)] 
 directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'\papers')
 # from sidebar import display_sidebar
