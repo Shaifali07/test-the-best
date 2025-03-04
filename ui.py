@@ -1,3 +1,6 @@
+# __import__('pysqlite3')
+# import sys
+# sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import streamlit as st
 import requests
 import os
@@ -5,8 +8,9 @@ import pathlib
 import torch
 from db_utilities import get_all_documents, delete_all_record
 from main import clear_question_bank
-torch.classes.__path__ = []
-directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'venv\papers')
+GROQ_API_KEY=st.secrets["GROQ_API_KEY"]
+torch.classes.__path__ = [os.path.join(torch.__path__[0], torch.classes.__file__)] 
+directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'\papers')
 # from sidebar import display_sidebar
 # from chat_interface import display_chat_interface
 

@@ -1,8 +1,11 @@
+import os
 # command = 'python install_packages.py'
 # os.system(command)
 from typing import List
 import pathlib
-import os
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_utilites import generate_response
 from db_utilities import get_chat_history,insert_application_logs,get_all_documents
 from pydantic import BaseModel
@@ -11,7 +14,7 @@ import uuid
 from fastapi import FastAPI, UploadFile, File,HTTPException
 app=FastAPI()
 
-directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'venv\papers\\')
+directory_path=os.path.join(pathlib.Path(__file__).parent.resolve(),'\papers\\')
 from db_utilities import insert_document_record, delete_all_record
 delete_all_record()
 def clear_question_bank(directory_path):
