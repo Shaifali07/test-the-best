@@ -10,10 +10,11 @@ pip.main(['install', 'pypdf'])
 pip.main(['install', 'langchain_chroma'])
 pip.main(['install', 'unstructured[docx]'])
 pip.main(["install", "langchain_huggingface"])
-pip.main(["install", "python - multipart"])
+pip.main(["install", "python-multipart"])
 pip.main(["install", "streamlit"])
-
-
+pip.main(["install", "torch"])
+pip.main(["install","pysqlite3-binary"])
+pip.main(["install","chromadb"])
 
 
 
