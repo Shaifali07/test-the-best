@@ -12,3 +12,4 @@ unstructured[docx]
 langchain_huggingface
 python-multipart
 streamlit
+pysqlite3-binary
