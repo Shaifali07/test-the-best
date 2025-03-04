@@ -10,5 +10,5 @@ pypdf
 langchain_chroma
 unstructured[docx]
 langchain_huggingface
-python - multipart
+python-multipart
 streamlit
