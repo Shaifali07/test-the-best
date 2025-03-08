@@ -119,7 +119,7 @@ def get_chat_response(question, course_outcomes,session_id, model):
 #     except Exception as e:
 #         st.error(f"An error occurred: {str(e)}")
 #         return None
-model_options = ["DeepSeek-R1-Distill-Llama-70b", "llama-3.3-70b-versatile","gemma2-9b-it:Google"]
+model_options = ["DeepSeek-R1-Distill-Llama-70b", "llama-3.3-70b-versatile","gemma2-9b-it"]
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
 st.sidebar.selectbox("Select Model", options=model_options, key="model")
