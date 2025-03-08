@@ -55,26 +55,26 @@ async def chat(query_input:query_input):
     return QueryResponse(response=response, session_id=query_input.session_id, model_name=query_input.model)
 
 
-@app.post("/uploadfile")
-# def file_contents(files: UploadFile = File(...)):
-#     return {"uploaded_files": files.filename}
-async def create_upload_file( file: UploadFile = File(...)):
-    # return {"filename": file.filename}
-      try:
+# @app.post("/uploadfile")
+# # def file_contents(files: UploadFile = File(...)):
+# #     return {"uploaded_files": files.filename}
+# async def create_upload_file( file: UploadFile = File(...)):
+#     # return {"filename": file.filename}
+#       try:
 
-              file_path = os.getcwd()+'/papers/'+file.filename
-              with open(file_path, "wb") as f:
-                    f.write(file.file.read())
-              success = index_document_to_Chroma()
-              file_id = insert_document_record(file.filename)
-              if(success):
+#               file_path = os.getcwd()+'/papers/'+file.filename
+#               with open(file_path, "wb") as f:
+#                     f.write(file.file.read())
+#               success = index_document_to_Chroma()
+#               file_id = insert_document_record(file.filename)
+#               if(success):
 
-                     return {"message": "File saved successfully"}
-              else:
-                raise HTTPException(status_code=500, detail=f"Failed to index {file.filename}.")
-     #
-      except Exception as e:
-         return {"message": e.args}
+#                      return {"message": "File saved successfully"}
+#               else:
+#                 raise HTTPException(status_code=500, detail=f"Failed to index {file.filename}.")
+#      #
+#       except Exception as e:
+#          return {"message": e.args}
 
 
 
