@@ -94,31 +94,31 @@ def get_chat_response(question, course_outcomes,session_id, model):
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
         return None    
-def get_api_response(question, course_outcomes,session_id, model):
-    headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
-    if (course_outcomes==None):
-        data = {"question": question, "model": model}
-    else:
-        data = {"question": question, "course_outcomes":course_outcomes,"model": model}
-    # st.write(data)
-    if session_id:
-        data["session_id"] = session_id
+# def get_api_response(question, course_outcomes,session_id, model):
+#     headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
+#     if (course_outcomes==None):
+#         data = {"question": question, "model": model}
+#     else:
+#         data = {"question": question, "course_outcomes":course_outcomes,"model": model}
+#     # st.write(data)
+#     if session_id:
+#         data["session_id"] = session_id
 
-    try:
-        response = requests.post("http://localhost:8000/chat", headers=headers, json=data)
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 422:
-            st.error(f":red[Please upload the question bank.]")
-            return None
-        else:
-            st.error(f"API request failed with status code {response.status_code}: {response.text}")
-            return None
+#     try:
+#         response = requests.post("http://localhost:8000/chat", headers=headers, json=data)
+#         if response.status_code == 200:
+#             return response.json()
+#         elif response.status_code == 422:
+#             st.error(f":red[Please upload the question bank.]")
+#             return None
+#         else:
+#             st.error(f"API request failed with status code {response.status_code}: {response.text}")
+#             return None
 
 
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
-        return None
+#     except Exception as e:
+#         st.error(f"An error occurred: {str(e)}")
+#         return None
 model_options = ["DeepSeek-R1-Distill-Llama-70b", "llama-3.3-70b-versatile","gemma2-9b-it:Google"]
 if "uploader_key" not in st.session_state:
     st.session_state.uploader_key = 0
